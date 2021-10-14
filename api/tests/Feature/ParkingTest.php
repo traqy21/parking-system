@@ -1,7 +1,8 @@
 <?php
 namespace Tests\Feature\SysAdmin;
 
-use App\Models\Post;
+use App\Models\EntryPoint;
+use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -10,86 +11,6 @@ use Tests\TestCase;
 
 class ParkingTest extends TestCase
 {
-
-    public function testCreateComment(){
-        $post = Post::first();
-
-        $response = $this->postJson("api/posts/{$post->id}/comments", []);
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-
-        //not uuid comment id
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' => Str::random(15),
-        ]);
-        $response->assertStatus(    Response::HTTP_UNPROCESSABLE_ENTITY);
-
-
-        //not existing comment id
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' => Uuid::uuid4()->toString(),
-        ]);
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-
-
-        //1 parent comment
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-        ]);
-        $commentData = $this->decode($response)->data;
-
-        //2 reply to parent comment
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' =>$commentData->id,
-        ]);
-        $secondCommentData = $this->decode($response)->data;
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonStructure([
-            'message'
-        ]);
-
-        //2 reply again to parent comment
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' =>$commentData->id,
-        ]);
-        $secondCommentData = $this->decode($response)->data;
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonStructure([
-            'message'
-        ]);
-
-        //3
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' => $secondCommentData->id,
-        ]);
-        $thirdCommentData = $this->decode($response)->data;
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonStructure([
-            'message'
-        ]);
-
-        //4 - cannot process allowed 3 layers only
-        $response = $this->postJson("api/posts/{$post->id}/comments", [
-            'user_name' => Str::random(10),
-            'message' => Str::random(15),
-            'to_comment_id' => $thirdCommentData->id,
-        ]);
-        $fourthCommentData = $this->decode($response)->data;
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
-        $response->assertJsonStructure([
-            'message'
-        ]);
-    }
 
     public function testViewPost(){
         $post = Post::first();
@@ -103,11 +24,69 @@ class ParkingTest extends TestCase
     //test parking
 
     public function testParkVehicle(){
-        //register to parking transaction
+        $entryPoint = EntryPoint::first();
+        $response = $this->postJson("api/transactions", []);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $plateNo = Str::random(10);
+
+        //invalid type
+        $response = $this->postJson("api/transactions", [
+            'vehicle' => [
+                'plate_no' => $plateNo,
+                'type' => 3, //0-small, 1-medium, 2-large
+            ],
+            'entry_point_id' => $entryPoint->id
+        ]);
+        $response->assertStatus(    Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        //201
+        $response = $this->postJson("api/transactions", [
+            'vehicle' => [
+                'plate_no' => $plateNo,
+                'type' => Vehicle::SMALL, //0-small, 1-medium, 2-large
+            ],
+            'entry_point_id' => $entryPoint->id
+        ]);
+        $this->debug($response);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'message'
+        ]);
     }
 
     public function testUnparkVehicle(){
-        //record rates
+        //park vehicle first
+        $entryPoint = EntryPoint::first();
+        $response = $this->postJson("api/transactions", []);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $plateNo = Str::random(10);
+        $response = $this->postJson("api/transactions", [
+            'vehicle' => [
+                'plate_no' => $plateNo,
+                'type' => Vehicle::SMALL, //0-small, 1-medium, 2-large
+            ],
+            'entry_point_id' => $entryPoint->id
+        ]);
+        $transaction = $this->decode($response)->data;
+
+        //invalid type
+        $response = $this->putJson("api/transactions/{$transaction->reference}");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'message'
+        ]);
+    }
+
+
+    public function testUnparkVehicleManualValues(){
+        //invalid type
+        $response = $this->putJson("api/transactions/IrkIUpuI");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'message'
+        ]);
     }
 
 }

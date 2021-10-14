@@ -15,7 +15,6 @@ class CreateVehiclesTable extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('entry_point_id');
             $table->string('plate_no')->unique();
             $table->string('type');
             $table->timestamps();

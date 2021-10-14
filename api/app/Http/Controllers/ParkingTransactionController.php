@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
-use App\Models\Post;
-use App\Services\CommentService;
+use App\Services\ParkingTransactionService;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class ParkingTransactionController extends Controller
 {
     protected $request;
     protected $service;
 
-    public function __construct(Request $request, CommentService $service)
+    public function __construct(Request $request, ParkingTransactionService $service)
     {
         $this->request = $request;
         $this->service = $service;
@@ -43,21 +41,20 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(Request $request)
     {
         $this->validate($request, [
-            'user_name' => 'required',
-            'message' => 'required',
-            'to_comment_id' => 'nullable|uuid|exists:comments,id',
+            "vehicle.plate_no" => "required|string",
+            "vehicle.type" => "required|integer|between:0,2"
         ]);
 
         $data = $request->all();
-        $data['post_id'] = $post->id;
         $response = $this->service->create($data);
         return response()->json([
             "message" => $response->message,
             "data" => $response->data
         ], $response->status);
+
     }
 
     /**
@@ -68,6 +65,7 @@ class CommentController extends Controller
      */
     public function show($id)
     {
+        //
     }
 
     /**
@@ -90,7 +88,11 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $response = $this->service->unpark($id);
+        return response()->json([
+            "message" => $response->message,
+            "data" => $response->data
+        ], $response->status);
     }
 
     /**

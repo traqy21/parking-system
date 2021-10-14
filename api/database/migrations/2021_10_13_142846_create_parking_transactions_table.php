@@ -15,10 +15,13 @@ class CreateParkingTransactionsTable extends Migration
     {
         Schema::create('parking_transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->dateTime('exit_time');
-            $table->float('rate')->default(0);
+            $table->string('reference')->unique();
             $table->uuid('vehicle_id');
             $table->uuid('slot_id');
+            $table->string('status')->default('in_process');
+            $table->dateTime('exit_time')->nullable();
+            $table->float('rate')->default(0);
+            $table->string('description')->nullable();
 
             $table->foreign('slot_id')
                 ->references('id')

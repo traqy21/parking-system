@@ -16,6 +16,7 @@ class CreateSlotsTable extends Migration
         Schema::create('slots', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('entry_point_id');
+            $table->unsignedInteger('slot_no');
             $table->unsignedInteger('size');
             $table->unsignedInteger('distance');    //from entry point
             $table->float('exceeding_hourly_rate');
