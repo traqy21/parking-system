@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    container_name: parking_api
+    build:
+      context: ./
+      dockerfile: ./infrastructure/dev/Dockerfile
+    image: parkingapi:latest
+    ports:
+      - "8080:80"
+    expose:
+      - '80'
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  database:
+    container_name: parking_db
+    image: mysql:5.7.19
+    restart: always
+    environment:
+      - MYSQL_DATABASE=parking
+      - MYSQL_USER=parkinguser
+      - MYSQL_PASSWORD=parkingpass
+      - MYSQL_ROOT_PASSWORD=parkingsecret
+    ports:
+      - '3306'
+    expose:
+      - '3306'
+
