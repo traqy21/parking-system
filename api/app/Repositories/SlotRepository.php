@@ -20,7 +20,6 @@ class SlotRepository extends AbstractRepository
             ->where('is_vacant', true)
             ->where('entry_point_id', $entryPointId);
 
-        Log::debug('entry_point' , [$entryPointId]);
         //(b) M vehicles can park in MP and LP parking spaces; and
         if($vehicleType ==  Vehicle::MEDIUM){
             $query = $query->whereBetween('size', [Slot::MEDIUM, Slot::LARGE]);

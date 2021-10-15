@@ -12,4 +12,12 @@ class ParkingTransactionRepository extends AbstractRepository
     {
         parent::__construct($model);
     }
+
+    public function vehicleLatestChargedTransaction($vehicleId){
+        return $this->model
+            ->where('vehicle_id', $vehicleId)
+            ->where('status', ParkingTransaction::CHARGED)
+            ->orderBy('exit_time', 'desc')
+            ->first();
+    }
 }
