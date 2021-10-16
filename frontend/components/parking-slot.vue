@@ -4,7 +4,7 @@
     width="300"
     :color="(parkingSlot.is_vacant) ? 'green darken-2': 'red darken-1'"
   >
-    <h2>Slot no: {{ parkingSlot.slot_no }}</h2>
+    <h2>No: {{ parkingSlot.slot_no }}</h2>
 
     <div class="d-flex flex-column">
       <span>Size: {{ readableSize(parkingSlot.size) }}</span>

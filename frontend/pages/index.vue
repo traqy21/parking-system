@@ -18,7 +18,7 @@
 
         <v-row v-for="(item, key) in entryPoints" :key="key">
           <v-col cols="12">
-            <h3>{{ item.name }}</h3>
+            <h3>{{ item.name }} - Slots</h3>
           </v-col>
           <v-col cols="12">
             <v-row>

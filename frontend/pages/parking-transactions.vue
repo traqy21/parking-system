@@ -42,6 +42,12 @@
                 <th class="text-left">
                   Charged Rate
                 </th>
+                <th class="text-left">
+                  Description
+                </th>
+                <th class="text-left">
+                  Charge per hour
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -56,6 +62,8 @@
                 <td>{{ item.created_at }}</td>
                 <td>{{ item.exit_time }}</td>
                 <td>{{ item.rate }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.slot.exceeding_hourly_rate }}</td>
               </tr>
             </tbody>
           </template>
