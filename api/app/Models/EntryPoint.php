@@ -15,4 +15,8 @@ class EntryPoint extends CoreModel
             ->where('is_vacant', true)
             ->orderBy('distance');
     }
+
+    public function slots(){
+        return $this->hasMany(Slot::class)->orderBy('distance');
+    }
 }

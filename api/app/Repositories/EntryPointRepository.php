@@ -12,4 +12,8 @@ class EntryPointRepository extends AbstractRepository
     {
         parent::__construct($model);
     }
+
+    public function getList() {
+        return $this->model->with('slots')->get();
+    }
 }

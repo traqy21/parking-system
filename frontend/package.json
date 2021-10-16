@@ -1,0 +1,43 @@
+{
+  "name": "parkingSystem",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "yarn lint:js"
+  },
+  "dependencies": {
+    "@vuex-orm/core": "^0.36.3",
+    "cookie-universal-nuxt": "^2.1.4",
+    "core-js": "^3.15.1",
+    "eslint-plugin-react": "^7.26.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.27.0",
+    "nuxt": "^2.15.7",
+    "pluralize": "^8.0.0",
+    "vue": "^2.6.12",
+    "vue-meta": "^2.4.0",
+    "vuetify": "^2.5.5",
+    "vuex": "^3.5.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.4.0",
+    "@nuxtjs/eslint-config": "^3.1.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/vuetify": "^1.12.1",
+    "@vue/test-utils": "^1.2.1",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^27.0.5",
+    "eslint": "^7.32.0",
+    "eslint-plugin-nuxt": "^1.0.0",
+    "jest": "^27.0.5",
+    "vue-jest": "^3.0.4"
+  }
+}

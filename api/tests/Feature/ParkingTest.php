@@ -14,9 +14,9 @@ use Tests\TestCase;
 class ParkingTest extends TestCase
 {
 
-    public function testViewPost(){
-        $post = Post::first();
-        $response = $this->getJson("api/posts/{$post->id}", []);
+    public function testEntryPointsList(){
+        $response = $this->getJson("api/entry-points");
+        $this->debug($response);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'message'

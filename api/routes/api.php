@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 //Route::post('posts/{post}/comments', 'CommentController@store')->name('comment.store');
 //Route::get('posts/{id}', 'PostController@show')->name('comment.show');
 Route::resource('transactions', ParkingTransactionController::class);
+Route::resource('entry-points', EntryPointController::class);
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
