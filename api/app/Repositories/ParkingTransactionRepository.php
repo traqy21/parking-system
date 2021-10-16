@@ -20,4 +20,8 @@ class ParkingTransactionRepository extends AbstractRepository
             ->orderBy('exit_time', 'desc')
             ->first();
     }
+
+    public function getList() {
+        return $this->model->with(['slot', 'vehicle'])->get();
+    }
 }

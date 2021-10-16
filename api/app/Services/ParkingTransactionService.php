@@ -31,6 +31,10 @@ class ParkingTransactionService extends AbstractService
         parent::__construct($repository);
     }
 
+    public function getList(){
+        return $this->response(200, "view.200", $this->repository->getList());
+    }
+
     public function create($data) {
         //find vacant slot
         $entryPointId = $data['entry_point_id'];
@@ -64,8 +68,8 @@ class ParkingTransactionService extends AbstractService
         }
 
         return $this->response(200, "create.200", [
-            "reference" => $created->reference,
-            "slot_no" => $slot->slot_no
+            "transaction" => $created,
+            "slot" => $slot
         ]);
     }
 
@@ -102,12 +106,12 @@ class ParkingTransactionService extends AbstractService
             $slot->save();
 
             return $this->response(200, "unpark.200", [
-                "charged_rate" => $transaction->rate
+                "transaction" => $transaction
             ]);
         }
 
-        return $this->response(200, "unpark.200", [
-            "charged_rate" => $transaction->rate
+        return $this->response(400, "unpark.400", [
+            "transaction" => null
         ]);
     }
 

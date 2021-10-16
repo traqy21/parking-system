@@ -22,7 +22,11 @@ class ParkingTransactionController extends Controller
      */
     public function index()
     {
-        //
+        $response = $this->service->getList();
+        return response()->json([
+            "message" => $response->message,
+            "data" => $response->data
+        ], $response->status);
     }
 
     /**

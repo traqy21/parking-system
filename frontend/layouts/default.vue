@@ -1,10 +1,10 @@
 <template>
-  <v-app dark> 
+  <v-app dark>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
-    </v-main> 
+    </v-main>
   </v-app>
 </template>
 

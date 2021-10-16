@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class ParkingTest extends TestCase
 {
-
     public function testEntryPointsList(){
         $response = $this->getJson("api/entry-points");
         $this->debug($response);
@@ -23,6 +22,14 @@ class ParkingTest extends TestCase
         ]);
     }
 
+    public function testParkingTransactionList(){
+        $response = $this->getJson("api/transactions");
+        $this->debug($response);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'message'
+        ]);
+    }
     //test parking
     public function testParkVehicle(){
         $entryPoint = EntryPoint::first();
@@ -144,4 +151,6 @@ class ParkingTest extends TestCase
             'message'
         ]);
     }
+
+
 }

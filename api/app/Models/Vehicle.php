@@ -11,7 +11,6 @@ class Vehicle extends CoreModel
     const LARGE = 2;
 
     protected $fillable = [
-        'entry_point_id',
         'plate_no',
         'type',
     ];
