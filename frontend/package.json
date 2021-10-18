@@ -20,6 +20,7 @@
     "moment": "^2.27.0",
     "nuxt": "^2.15.7",
     "pluralize": "^8.0.0",
+    "vee-validate": "^3.2.5",
     "vue": "^2.6.12",
     "vue-meta": "^2.4.0",
     "vuetify": "^2.5.5",

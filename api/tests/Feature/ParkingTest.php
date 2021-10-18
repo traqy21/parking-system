@@ -44,7 +44,10 @@ class ParkingTest extends TestCase
                 'plate_no' => $plateNo,
                 'type' => 3, //0-small, 1-medium, 2-large
             ],
-            'entry_point_id' => $entryPoint->id
+            'entry_point_id' => $entryPoint->id,
+            "date" => Carbon::now()->toDateString(),
+            "time" => Carbon::now()->toTimeString(),
+            "use_server_time" => false,
         ]);
         $response->assertStatus(    Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -54,7 +57,10 @@ class ParkingTest extends TestCase
                 'plate_no' => $plateNo,
                 'type' => Vehicle::SMALL, //0-small, 1-medium, 2-large
             ],
-            'entry_point_id' => $entryPoint->id
+            'entry_point_id' => $entryPoint->id,
+            "date" => Carbon::now()->toDateString(),
+            "time" => Carbon::now()->toTimeString(),
+            "use_server_time" => true,
         ]);
         $this->debug($response);
         $response->assertStatus(Response::HTTP_OK);
@@ -75,12 +81,19 @@ class ParkingTest extends TestCase
                 'plate_no' => $plateNo,
                 'type' => Vehicle::SMALL, //0-small, 1-medium, 2-large
             ],
-            'entry_point_id' => $entryPoint->id
+            'entry_point_id' => $entryPoint->id,
+            "date" => Carbon::now()->toDateString(),
+            "time" => Carbon::now()->toTimeString(),
+            "use_server_time" => false,
         ]);
-        $transaction = $this->decode($response)->data;
-
+        $data = $this->decode($response)->data;
+        $transaction = $data->transaction;
         //invalid type
-        $response = $this->putJson("api/transactions/{$transaction->reference}");
+        $response = $this->putJson("api/transactions/{$transaction->reference}", [
+            "date" => Carbon::now()->toDateString(),
+            "time" => Carbon::now()->toTimeString(),
+            "use_server_time" => true,
+        ]);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'message'
@@ -97,7 +110,7 @@ class ParkingTest extends TestCase
                 'plate_no' => $carAplateNo,
                 'type' => Vehicle::SMALL, //0-small, 1-medium, 2-large
             ],
-            'entry_point_id' => $entryPoint->id
+            'entry_point_id' => $entryPoint->id,
         ]);
 
         $carAParkData = $this->decode($response)->data;
@@ -143,9 +156,13 @@ class ParkingTest extends TestCase
 
     }
 
-    public function testUnparkVehicleManualValues(){
+    public function testManualValuesUnparkVehicle(){
         //invalid type
-        $response = $this->putJson("api/transactions/ArKsIFGE");
+        $response = $this->putJson("api/transactions/zhhjKnGS", [
+            "date" => Carbon::now()->toDateString(),
+            "time" => Carbon::now()->toTimeString(),
+            "use_server_time" => true,
+        ]);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'message'

@@ -116,6 +116,8 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'validate_already_parked' => 'The vehicle is already parked.',
+    'validate_vehicle_type' => 'The vehicle is existing but different type given.',
 
     /*
     |--------------------------------------------------------------------------

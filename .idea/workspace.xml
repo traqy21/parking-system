@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="60484bc2-7a5d-468a-8054-b6d0de8b3745" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/parking-slot.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/components/parking-slot.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/pages/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/pages/parking-transactions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/pages/parking-transactions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/store-entities/parkingTransactions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/store-entities/parkingTransactions.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +155,9 @@
       <workItem from="1634133259113" duration="5487000" />
       <workItem from="1634171597518" duration="27530000" />
       <workItem from="1634261589291" duration="11528000" />
-      <workItem from="1634376760693" duration="11389000" />
+      <workItem from="1634376760693" duration="11493000" />
+      <workItem from="1634441647909" duration="2401000" />
+      <workItem from="1634558964590" duration="8589000" />
     </task>
     <servers />
   </component>

@@ -54,11 +54,19 @@ class ParkingTransactionService extends AbstractService
             ]);
         }
 
+        $createTime = Carbon::now()->toDateTimeString();
+
+        if(!$data['use_server_time']){
+            $createTime = $data['date'] . ' ' . $data['time'];
+            $createTime = Carbon::parse($createTime)->toDateTimeString();
+        }
+
         //create transactions
         $created = $this->repository->create([
             'reference' => Str::random(8),
             'vehicle_id' => $vehicle->id,
             'slot_id' => $slot->id,
+            'created_at' => $createTime
         ]);
 
         if($created){
@@ -73,7 +81,8 @@ class ParkingTransactionService extends AbstractService
         ]);
     }
 
-    public function unpark($reference){
+    public function unpark($reference, $data){
+
         $transaction = $this->repository->find('reference', $reference);
         if(is_null($transaction)){
             return $this->response(400, "unpark.transaction_not_exist", null);
@@ -82,15 +91,19 @@ class ParkingTransactionService extends AbstractService
         $slot = $transaction->slot;
         if($transaction->status == ParkingTransaction::IN_PROCESS){
             //FOR TESTING THE EXIT TIME
-            //$exitTime = Carbon::now()->addHours(2);
-
             $exitTime = Carbon::now();
+            if(!$data['use_server_time']){
+                $dataExitTime = $data['date'] . ' ' . $data['time'];
+                $exitTime = Carbon::parse($dataExitTime);
+            }
+
             $timeDetails = $this->consumedTimeDetails($transaction->created_at, $exitTime);
             $description = $this->generateDescription($timeDetails);
 
             $currentRate = $this->calculateTotalRate($transaction->slot, $timeDetails);
             $previousTransactionRate = $this->calculatePreviousRate($transaction);
-
+            Log::debug('current_rate: ', [$currentRate]);
+            Log::debug('previous_rate: ', [$previousTransactionRate]);
             //disable flat rate for continues charges
             if($previousTransactionRate > 0){
                 $currentRate = $currentRate - flat_rate();
@@ -118,9 +131,9 @@ class ParkingTransactionService extends AbstractService
     private function generateDescription($data){
         $exceedingHours = 0;
 
-        $desc = "Exceeded | ";
+        $desc = "Exceeded - ";
         if($data['day'] > 0){
-            $desc .= " Days: {$data['day']}";
+            $desc .= " Day/s: {$data['day']}";
         }
 
         if($data['minute'] > 0){
@@ -128,11 +141,8 @@ class ParkingTransactionService extends AbstractService
         }
         if($data['hour'] > fixed_hour()){
             $exceedingHours = $exceedingHours + ($data['hour'] - fixed_hour());
-            $desc .= " hours {$exceedingHours}";
-        } else {
-            $desc = null;
+            $desc .= " hour/s: {$exceedingHours}";
         }
-
         return $desc;
     }
 

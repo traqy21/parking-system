@@ -17,6 +17,7 @@ class ParkingTransaction extends CoreModel
         'exit_time',
         'rate',
         'description',
+        'created_at'
     ];
 
     public function vehicle(){

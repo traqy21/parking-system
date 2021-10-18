@@ -26,7 +26,7 @@ export default {
     },
 
     async update ({ dispatch }, data) {
-      const responseData = await this.$axios.put(`/api/transactions/${data}`)
+      const responseData = await this.$axios.put(`/api/transactions/${data.reference}`, data)
       console.log(responseData)
       dispatch(
         'entities/parkingTransactions/insertOrUpdate',

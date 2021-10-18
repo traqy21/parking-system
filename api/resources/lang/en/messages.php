@@ -8,6 +8,7 @@ return [
         ],
         'unpark' => [
             '200' => "Transaction has been updated.",
+            '400' => "Transaction has already been charged.",
             'transaction_not_exist' => 'Transaction does not exist.'
         ]
     ],

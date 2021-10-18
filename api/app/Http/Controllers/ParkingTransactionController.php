@@ -48,8 +48,11 @@ class ParkingTransactionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "vehicle.plate_no" => "required|string",
-            "vehicle.type" => "required|integer|between:0,2"
+            "vehicle.plate_no" => "required|string|validateAlreadyParked",
+            "vehicle.type" => "required|integer|between:0,2|validateVehicleType",
+            "date" => "required",
+            "time" => "required",
+            "use_server_time" => "required",
         ]);
 
         $data = $request->all();
@@ -92,7 +95,13 @@ class ParkingTransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $response = $this->service->unpark($id);
+        $this->validate($request, [
+            "date" => "required",
+            "time" => "required",
+            "use_server_time" => "required",
+        ]);
+
+        $response = $this->service->unpark($id, $request->all());
         return response()->json([
             "message" => $response->message,
             "data" => $response->data

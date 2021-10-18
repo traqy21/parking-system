@@ -1,9 +1,9 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col cols="12">
       <v-card class="ma-3 pa-3">
         <div class="d-flex flex-row">
-          <v-card-title>PARKING Transactions</v-card-title>
+          <v-card-title>PARKING TRANSACTIONS</v-card-title>
           <div class="d-flex flex-column pa-3">
             <v-btn
               color="primary"
@@ -31,6 +31,9 @@
                   Slot No.
                 </th>
                 <th class="text-left">
+                  Exceeding charge per hour
+                </th>
+                <th class="text-left">
                   Status
                 </th>
                 <th class="text-left">
@@ -40,13 +43,11 @@
                   Exit Time
                 </th>
                 <th class="text-left">
-                  Charged Rate
-                </th>
-                <th class="text-left">
                   Description
                 </th>
+
                 <th class="text-left">
-                  Charge per hour
+                  Charged Rate
                 </th>
               </tr>
             </thead>
@@ -56,14 +57,15 @@
                 :key="item.name"
               >
                 <td>{{ item.reference }}</td>
-                <td>{{ item.vehicle.plate_no }}</td>
+                <td>{{ (item.vehicle) ? item.vehicle.plate_no: null }}</td>
                 <td>{{ item.slot.slot_no }}</td>
+                <td>{{ (item.slot) ? item.slot.exceeding_hourly_rate: null }}</td>
                 <td>{{ item.status }}</td>
                 <td>{{ item.created_at }}</td>
                 <td>{{ item.exit_time }}</td>
-                <td>{{ item.rate }}</td>
+
                 <td>{{ item.description }}</td>
-                <td>{{ item.slot.exceeding_hourly_rate }}</td>
+                <td>{{ item.rate }}</td>
               </tr>
             </tbody>
           </template>
